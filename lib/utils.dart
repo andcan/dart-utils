@@ -1,5 +1,7 @@
 library utils;
 
+part 'utils/optional.dart';
+
 String format (String s, [int limit = 80, String delimiter = '\n']) {
   //Creating buffer to hold content
   StringBuffer buf = new StringBuffer();
