@@ -25,7 +25,7 @@ String format (String s, [int limit = 80, String delimiter = '\n']) {
   return buf.toString();
 }
 /**
- * Value used from [hash] function
+ * Value used from [hashCode] function
  */
 const int PRIME = 31;
 
