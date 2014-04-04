@@ -1,6 +1,6 @@
 #!/usr/bin/env dart
 
-import '../lib/utils/utils.dart' as u;
+import '../lib/utils.dart' as u;
 import 'dart:io';
 import 'package:args/args.dart';
 
