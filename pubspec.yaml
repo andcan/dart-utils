@@ -1,0 +1,8 @@
+name: utils
+version: 0.0.0
+author: Andrea Cantafio
+description: A sample command-line application
+environment:
+  sdk: 1.2.0
+dependencies:
+  args: '>=0.10.0+2 <0.11.0'
