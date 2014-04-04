@@ -24,3 +24,18 @@ String format (String s, [int limit = 80, String delimiter = '\n']) {
   });
   return buf.toString();
 }
+/**
+ * Value used from [hash] function
+ */
+const int PRIME = 31;
+
+/**
+ * Default hashCode implementation
+ */
+int hashCode (List values) {
+  int hash = 1;
+  values.forEach((value) {
+    hash = PRIME * hash + value.hashCode;
+  });
+  return hash;
+}
