@@ -1,5 +1,6 @@
 library utils;
 
+part 'utils/is.dart';
 part 'utils/optional.dart';
 
 String format (String s, [int limit = 80, String delimiter = '\n']) {
