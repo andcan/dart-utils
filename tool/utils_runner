@@ -1,3 +1,4 @@
+#!/usr/bin/env dart
 /**
  * Copyright (C) 2014  Andrea Cantafio kk4r.1m@gmail.com
  * 
@@ -14,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-part of utils;
+import 'dart:io';
 
-final Function isBool = (value) => value is bool;
-final Function isInt = (value) => value is int;
-final Function isNum = (value) => value is num;
-final Function isString = (value) => value is String;
+void main (List<String> args) {
+  ProcessResult result = Process.runSync('tool/hop_runner.dart', args, 
+    workingDirectory: '/home/andrea/dart/utils');
+  print(result.stdout is String ? result.stdout : result.stderr);
+}

@@ -1,3 +1,4 @@
+#!/usr/bin/env dart
 /**
  * Copyright (C) 2014  Andrea Cantafio kk4r.1m@gmail.com
  * 
@@ -14,9 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-part of utils;
+library hop_runner;
 
-final Function isBool = (value) => value is bool;
-final Function isInt = (value) => value is int;
-final Function isNum = (value) => value is num;
-final Function isString = (value) => value is String;
+import '../lib/utils.dart';
+import 'dart:io';
+import 'package:args/args.dart';
+import 'package:hop/hop.dart';
+import 'package:hop_docgen/hop_docgen.dart';
+import 'package:hop/hop_tasks.dart';
+import 'package:path/path.dart' as path;
+
+part 'task/install.dart';
+part 'task/source.dart';
+
+void main (List<String> args) {
+  addTask(CMD_INSTALL, installTask());
+  addTask('add-header', addHeaderTask());
+  runHop(args);
+}
