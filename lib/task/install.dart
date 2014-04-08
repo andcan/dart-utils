@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-part of hop_runner;
-
+part of task;
 const String CMD_INSTALL = 'install';
 const String OPTION_ENV_FILE = 'envFile';
 const String OPTION_PKG = 'pkg';

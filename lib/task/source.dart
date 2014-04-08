@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-part of hop_runner;
-
+part of task;
 const String ENV_DART = '#!/usr/bin/env dart';
 
 Task addHeaderTask () {
@@ -26,6 +25,8 @@ Task addHeaderTask () {
   parser.addOption('email', abbr: 'e', defaultsTo: '', help: 'Email', 
       allowMultiple: false);
   parser.addOption('header', abbr: 'h', help: 'Header', allowMultiple: false);
+  parser.addOption('match', abbr: 'm', help: 'Regular Expression for filename',
+      allowMultiple: false);
   parser.addOption('year', abbr: 'y', help: 'Year', allowMultiple: false);
   return new Task ((TaskContext ctx) {
     ArgResults results = ctx.arguments;
@@ -40,6 +41,13 @@ Task addHeaderTask () {
     if (null == header) {
       print('"header" is required');
       return;
+    }
+    RegExp match;
+    String m = results['match'];
+    if (null == m) {
+      match = null;
+    } else {
+      match = new RegExp(m, multiLine: false, caseSensitive: true);
     }
     String y = results['year'];
     int year;
@@ -67,23 +75,50 @@ Task addHeaderTask () {
     });
     header = '${buf.toString()} */';
     results.rest.forEach((f) {
-      StringBuffer buf;
+      switch (FileSystemEntity.typeSync(f, followLinks: false)) {
+        case FileSystemEntityType.DIRECTORY:
+          new Directory(f).listSync(recursive: true, followLinks: false)
+            .forEach((entity) {
+              String p = entity.path;
+              switch (FileSystemEntity.typeSync(p, followLinks: false)) {
+                case FileSystemEntityType.FILE:
+                  if (null != match) {
+                    if (match.hasMatch(p)) {
+                      _addHeader(new File(p), header);
+                    }
+                  }
+                  break;
+              }
+            });
+          break;
+        case FileSystemEntityType.FILE:
+          if (null != match) {
+            if (match.hasMatch(f)) {
+              _addHeader(new File(f), header);
+            }
+          }
+          break;
+      }
       File file = new File(f);
-      String content = file.readAsStringSync();
-      if (content.startsWith(ENV_DART)) {
-        String line = '$ENV_DART\n';
-        buf = new StringBuffer(line);
-        content = content.substring(line.length);
-      } else {
-        buf = new StringBuffer();
-      }
-      if (!content.startsWith(header)) {
-        buf.write('$header\n');
-      }
-      buf.write(content);
-      file.writeAsStringSync(buf.toString(), mode: FileMode.WRITE);
     });
   }, argParser: parser, description: 'Adds header to files');
+}
+
+_addHeader (File file, String header) {
+  StringBuffer buf;
+  String content = file.readAsStringSync();
+  if (content.startsWith(ENV_DART)) {
+    String line = '$ENV_DART\n';
+    buf = new StringBuffer(line);
+    content = content.substring(line.length);
+  } else {
+    buf = new StringBuffer();
+  }
+  if (!content.startsWith(header)) {
+    buf.write('$header\n');
+  }
+  buf.write(content);
+  file.writeAsStringSync(buf.toString(), mode: FileMode.WRITE);
 }
 
 Task formatTask () {

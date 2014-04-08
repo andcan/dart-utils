@@ -1,4 +1,3 @@
-#!/usr/bin/env dart
 /**
  * Copyright (C) 2014  Andrea Cantafio kk4r.1m@gmail.com
  * 
@@ -15,19 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-library hop_runner;
+library task;
 
-import '../lib/task.dart';
+import 'utils.dart';
+
 import 'dart:io';
+
+import 'package:args/args.dart';
 import 'package:hop/hop.dart';
-import 'package:hop_docgen/hop_docgen.dart';
-import 'package:hop/hop_tasks.dart';
 import 'package:path/path.dart' as path;
 
-
-
-void main (List<String> args) {
-  addTask(CMD_INSTALL, installTask());
-  addTask('add-header', addHeaderTask());
-  runHop(args);
-}
+part 'task/install.dart';
+part 'task/source.dart';
