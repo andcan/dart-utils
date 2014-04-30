@@ -19,6 +19,7 @@ library utils;
 part 'utils/is.dart';
 part 'utils/license.dart';
 part 'utils/optional.dart';
+part 'utils/pair.dart';
 
 String format (String s, [int limit = 80, String delimiter = '\n']) {
   //Creating buffer to hold content
